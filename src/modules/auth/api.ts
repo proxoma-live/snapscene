@@ -1,16 +1,19 @@
+import { account } from "config";
+import { ID } from "appwrite";
+import * as Types from "./types";
 
-import { AxiosPromise } from 'axios';
+export const createUserAccount = async (user: Types.IEntity.User) => {
+  try {
+    const newAccount = await account.create(
+      ID.unique(),
+      user.email,
+      user.password,
+      user.name
+    );
 
-import config from 'config';
-
-export const List = ({ params }: { params: Types.IApi.List.Params }): AxiosPromise<Types.IApi.List.Response> =>
-  http.request.post(`${config.services.auth}/url`, {
-    per_page: params.perPage,
-    page: params.page,
-    sort: params.sort,
-    search: params.filter
-  });
-
-export const Single = ({ id }: { id: string }): AxiosPromise<Types.IApi.Single.Response> =>
-  http.request.get(`${config.services.auth}/url/${id}`);
-
+    return newAccount;
+  } catch (error) {
+    console.log("error");
+    return error;
+  }
+};
